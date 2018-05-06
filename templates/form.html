@@ -3,12 +3,12 @@
 
       <form action = "http://localhost:5001/chart" method = "POST">
 
-        <p style="font-size:120%;">Enter the Twitter username to test. This form is not validated, so be careful. Exclude the @. <br/>
-        As this is a protype proof-of-concept, the delay between submitting the form and receiving results is significant (5-10 minutes). In practice, this could be made more efficient, and typically would not be used in the form that it's presented here.</p>
+        <p style="font-size:120%;">Enter the Twitter username to test. This form is not validated, so be careful. <b>Exclude the @.</b><br/>
+        As this is a protype proof-of-concept, the delay between submitting the form and receiving results is significant (10-15 minutes). In practice, this could be made more efficient, and typically would not be used in the form that it's presented here.</p>
 
         <p style="font-size:120%;">A user that has not shared any articles will not return a meaningul result. The application was successfully tested using the screen_name 'seanhannity'.</p>
 
-         <p style="font-size:120%;">Screen Name:<input type = "text" name = "screen_name" /></p>
+         <p style="font-size:120%;">Screen Name:<input type = "text" name = "screen_name" value='seanhannity' /></p>
          <p><input type = "submit" value = "submit" /></p>
       </form>
 

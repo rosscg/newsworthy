@@ -4,7 +4,6 @@ import regex
 
 from .tokens import ACCESS_TOKENS, CONSUMER_SECRET, CONSUMER_KEY
 
-
 api_global = None
 
 def get_api():
@@ -26,7 +25,6 @@ def user_timeline(screen_name, count):
     except:
         print('Error with {}, user likely deleted or suspended.'.format(kwargs))
         return False
-    #statuses = api.user_timeline(**kwargs, count=50, trim_user=True)
     return statuses
 
 
@@ -39,4 +37,4 @@ def get_timeline_urls(screen_name, count):
 
 
 if __name__ == '__main__':
-    print(get_timeline_urls('CNN'))
+    print(get_timeline_urls('CNN', 5))

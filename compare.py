@@ -4,7 +4,7 @@ from subprocess import call
 from feed_compare import crawler, twitter
 import random
 
-#from athene_system.fnc import pipeline
+#TODO: move this file to the feed_compare module directory and adjust import in app.py
 
 bodies_path = 'athene_system/data/fnc-1/test_bodies.csv'
 stances_path = 'athene_system/data/fnc-1/test_stances_unlabeled.csv'
@@ -13,6 +13,7 @@ result_path = 'athene_system/data/fnc-1/fnc_results/submission.csv'
 Hacky implementation which writes to csv instead to intercept the Athene submission process. Final product would properly implement the model.
 '''
 
+# 6 Media outlets chosen,
 guardian_global = None
 nytimes_global = None
 bloomberg_global = None
@@ -42,9 +43,9 @@ def run_news_comparison(headlines):
     global foxnews_global
     global breitbart_global
 
-    all_news = guardian_global + nytimes_global + bloomberg_global + thesun_global + foxnews_global + breitbart_global
+    all_news = guardian_global + nytimes_global + bloomberg_global + thesun_global + foxnews_global + breitbart_global # Group articles into single list to run algorithm once.
 
-    bodies = [x[1] for x in all_news]
+    bodies = [x[1] for x in all_news]  #Take bodies from articles
 
     compare_headline(headlines, bodies)
 
@@ -58,6 +59,7 @@ def run_news_comparison(headlines):
 
         final_count = []
 
+        #TODO: Refactor the 6 iterations below.
         guardian_reader = reader_list[:len(guardian_global)]
         del(reader_list[:len(guardian_global)])
         for row in guardian_reader:
@@ -67,9 +69,8 @@ def run_news_comparison(headlines):
                 disagree_count += 1
             if row[2] == 'discuss':
                 discuss_count += 1
-        print("Guardian: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
-        final_count.append(("Guardian", agree_count, disagree_count))
-
+        #print("Guardian: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
+        final_count.append(("Guardian", agree_count, disagree_count, discuss_count))
 
         agree_count = 0
         disagree_count = 0
@@ -83,8 +84,8 @@ def run_news_comparison(headlines):
                 disagree_count += 1
             if row[2] == 'discuss':
                 discuss_count += 1
-        print("NY Times: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
-        final_count.append(("NY Times", agree_count, disagree_count))
+        #print("NY Times: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
+        final_count.append(("NY Times", agree_count, disagree_count, discuss_count))
 
         agree_count = 0
         disagree_count = 0
@@ -98,8 +99,8 @@ def run_news_comparison(headlines):
                 disagree_count += 1
             if row[2] == 'discuss':
                 discuss_count += 1
-        print("Bloomberg: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
-        final_count.append(("Bloomberg", agree_count, disagree_count))
+        #print("Bloomberg: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
+        final_count.append(("Bloomberg", agree_count, disagree_count, discuss_count))
 
         agree_count = 0
         disagree_count = 0
@@ -113,8 +114,8 @@ def run_news_comparison(headlines):
                 disagree_count += 1
             if row[2] == 'discuss':
                 discuss_count += 1
-        print("The Sun: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
-        final_count.append(("The Sun", agree_count, disagree_count))
+        #print("The Sun: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
+        final_count.append(("The Sun", agree_count, disagree_count, discuss_count))
 
         agree_count = 0
         disagree_count = 0
@@ -128,8 +129,8 @@ def run_news_comparison(headlines):
                 disagree_count += 1
             if row[2] == 'discuss':
                 discuss_count += 1
-        print("Fox News: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
-        final_count.append(("Fox News", agree_count, disagree_count))
+        #print("Fox News: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
+        final_count.append(("Fox News", agree_count, disagree_count, discuss_count))
 
         agree_count = 0
         disagree_count = 0
@@ -143,14 +144,10 @@ def run_news_comparison(headlines):
                 disagree_count += 1
             if row[2] == 'discuss':
                 discuss_count += 1
-        print("Brietbart: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
-        final_count.append(("Breitbart", agree_count, disagree_count))
+        #print("Brietbart: Agree: {}, Disagree: {}, Discuss: {}".format(agree_count, disagree_count, discuss_count))
+        final_count.append(("Breitbart", agree_count, disagree_count, discuss_count))
 
-    #f=open(bodies_path,'r')
-    #g=f.readlines()
-    #f.close()
-
-    print(final_count)
+    #print(final_count)
     return final_count
 
 
@@ -182,7 +179,6 @@ def get_news_articles(count):
         breitbart_global = [crawler.get_article(t) for t in timeline]
 
 
-
 def compare_headline(headlines, bodies=None):
     '''
     headline: a single headline string to compare
@@ -198,7 +194,6 @@ def compare_headline(headlines, bodies=None):
                 index+=1
                 writer.writerow([index] + [b])
 
-
     with open(stances_path, 'w') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['Headline', 'Body ID'])
@@ -206,30 +201,10 @@ def compare_headline(headlines, bodies=None):
         for x in range(1,len(bodies)+1):
             writer.writerow([random.choice(headlines), x])
 
-    print('finished writing files')
-
+    print('Finished writing CSV files, running model...')
     call(['python','athene_system/fnc/pipeline.py', '-p', 'ftest'])
 
 
-    #ith open(result_path, newline='') as csvfile:
-    #    reader = csv.reader(csvfile)
-    #    for row in reader:
-    #        print(row)
-
-
 if __name__ == '__main__':
-
-    headlines = ["Iran's Rouhani warns Trump of 'historic regret' over nuclear deal"]
-    run_user_comparison('seanhannity')
-    #get_news_articles()
-
-    #ts = twitter.get_timeline_urls('CNN')
-    #for t in ts:
-    #    x,y = crawler.get_article(t)
-        #print(x)
-
-
-
-    #h = 'Headline Text'
-    #b = ['Body1', 'Body2', 'Body3']
-    #compare_headline(h, b)
+    test_user = 'seanhannity'
+    print(run_user_comparison(test_user))

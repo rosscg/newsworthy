@@ -7,12 +7,20 @@
     <script src='static/Chart.min.js'></script>
   </head>
   <body>
-    These graphs show the proportion of articles shared by the user which agree or disagree with articles published by the news outlet. A higher value in the first graph suggests the user shares a viewpoint with the particular outlet (and so on). A low overall score across all outlets suggests that the user shares articles which are not corroborated by mainstream media (and therefore a risk of being 'fake')
-    
+    <p style="font-size:120%;">These graphs show the proportion of articles shared by the user which agree or disagree with articles published by the relevant news outlet. 'Discussions' represent published articles which are on topic with the user's articles, but don't take a stance on the truth.</p>
+
+    <p style="font-size:120%;">A higher value in the first graph suggests the user shares a viewpoint with the particular outlet (and so on). A low overall score across all outlets suggests that the user shares articles which are not corroborated by mainstream media (and therefore a risk of being 'fake').</p>
+
+    <p style="font-size:120%;">While the values for each graph are marked, the data is a sample and therefore the more useful finding is the distribution of articles across the set of outlets. The outlets are roughly ordered from 'liberal' to 'conservative' so it's possible a user's political leaning may be visualised by a skew in the results to either side.</p>
+
+    <p style="font-size:120%;">A lack of 'agree' articles from any outlet suggests the detection of a user which is sharing 'fake news'.</p>
+
     <h2>Headline Agreement Ratings</h2>
     <canvas id="chart" width="450" height="300"></canvas>
     <h2>Headline Disagreement Ratings</h2>
     <canvas id="chart2" width="450" height="300"></canvas>
+    <h2>Headline Discussion Ratings</h2>
+    <canvas id="chart3" width="450" height="300"></canvas>
 
 
     <script>
@@ -38,6 +46,7 @@
 
        steps = 10
        max = {{height}}
+       max_discuss = {{height_discuss}}
        // draw bar chart
        new Chart(mychart).Bar(barData, {
             scaleOverride: true,
@@ -80,6 +89,39 @@
             barShowStroke : true,
             scaleShowLabels: true
        });
+
+       // bar chart data
+       var barData3 = {
+       labels : [{% for item in labels %}
+                      "{{item}}",
+                  {% endfor %}],
+       datasets : [
+          {
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                data : [{% for item in values_discuss %}
+                          {{item}},
+                        {% endfor %}]
+          }
+          ]
+       }
+
+       // get bar chart canvas
+       var mychart3 = document.getElementById("chart3").getContext("2d");
+
+       // draw bar chart
+       new Chart(mychart3).Bar(barData3, {
+            scaleOverride: true,
+            scaleSteps: steps,
+            scaleStepWidth: Math.ceil(max_discuss / steps),
+            scaleStartValue: 0,
+            scaleShowVerticalLines: true,
+            scaleShowGridLines : true,
+            barShowStroke : true,
+            scaleShowLabels: true
+       });
+
 
     </script>
   </body>

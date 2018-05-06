@@ -20,18 +20,20 @@ def chart():
        form_data = request.form
        screen_name = form_data.get('screen_name')
 
-    data = run_user_comparison(screen_name)
+    #data = run_user_comparison(screen_name)
 
     # Test Data:
-    #data = [('Guardian', 8, 1), ('NY Times', 6, 1), ('Bloomberg', 4, 0), ('The Sun', 5, 0), ('Fox News', 2, 0), ('Breitbart', 6, 1)]
+    data = [('Guardian', 8, 1, 3), ('NY Times', 6, 1, 12), ('Bloomberg', 4, 0, 14), ('The Sun', 5, 0, 2), ('Fox News', 2, 0, 1), ('Breitbart', 6, 1, 0)]
 
     labels = [x[0] for x in data]
     values_agree = [x[1] for x in data]
     values_disagree = [x[2] for x in data]
+    values_discuss = [x[3] for x in data]
 
     height = max(values_agree + values_disagree)
+    height_discuss = max(values_discuss)
 
-    return render_template('chart.html', height=height, values_agree=values_agree, values_disagree=values_disagree, labels=labels)
+    return render_template('chart.html', height=height, height_discuss=height_discuss, values_agree=values_agree, values_disagree=values_disagree, values_discuss=values_discuss, labels=labels)
 
 
 
