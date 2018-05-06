@@ -22,7 +22,8 @@ def chart():
 
     data = run_user_comparison(screen_name)
 
-    data = [('Guardian', 8, 1), ('NY Times', 6, 1), ('Bloomberg', 4, 0), ('The Sun', 5, 0), ('Fox News', 2, 0), ('Breitbart', 6, 1)]
+    # Test Data:
+    #data = [('Guardian', 8, 1), ('NY Times', 6, 1), ('Bloomberg', 4, 0), ('The Sun', 5, 0), ('Fox News', 2, 0), ('Breitbart', 6, 1)]
 
     labels = [x[0] for x in data]
     values_agree = [x[1] for x in data]
