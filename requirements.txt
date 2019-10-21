@@ -35,7 +35,7 @@ MarkupSafe==1.0
 matplotlib==2.0.0
 networkx==1.11
 newspaper3k==0.2.6
-nltk==3.2.2
+nltk==3.4.5
 numba==0.30.1
 numpy==1.14.3
 oauthlib==2.0.7
