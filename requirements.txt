@@ -50,7 +50,7 @@ pyparsing==2.2.0
 PySocks==1.6.8
 python-dateutil==2.7.2
 pytz==2018.4
-PyYAML==3.12
+PyYAML==5.4
 regex==2016.12.27
 requests==2.18.4
 requests-file==1.4.3
